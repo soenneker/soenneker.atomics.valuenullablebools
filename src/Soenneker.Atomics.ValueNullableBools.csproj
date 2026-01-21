@@ -14,7 +14,7 @@
         <Version Condition="'$(BUILD_VERSION)' != ''">$(BUILD_VERSION)</Version>
         <AssemblyName>Soenneker.Atomics.ValueNullableBools</AssemblyName>
         <PackageId>Soenneker.Atomics.ValueNullableBools</PackageId>
-        <PackageTags>atomics valuenullablebools atomic bool nullable nullablebool valueatomicbool object csharp dotnet c# .net valuenullablebool</PackageTags>
+        <PackageTags>atomics valuenullablebools atomic bool nullable nullablebool valueatomicbool object csharp dotnet c# .net valuenullablebool valueatomicnullablebool</PackageTags>
         <Copyright>Copyright © 2026 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>

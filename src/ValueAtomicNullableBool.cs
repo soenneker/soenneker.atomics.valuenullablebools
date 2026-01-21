@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Soenneker.Atomics.ValueInts;
 
-namespace Soenneker.Atomics.NullableBools;
+namespace Soenneker.Atomics.ValueNullableBools;
 
 /// <summary>
 /// A lightweight, allocation-free atomic tri-state flag implemented on top of an inline
