@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Atomics.ValueNullableBools.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Atomics.ValueNullableBools\Soenneker.Atomics.ValueNullableBools.csproj" />
     </ItemGroup>
 
     <ItemGroup>
