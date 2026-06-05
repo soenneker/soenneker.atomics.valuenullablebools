@@ -33,15 +33,9 @@ public struct ValueAtomicNullableBool
 
     private ValueAtomicInt _state;
 
-    /// <summary>
-    /// Initializes a new instance in the <c>null</c>/<c>unknown</c> state.
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ValueAtomicNullableBool() => _state = new ValueAtomicInt(_null);
 
-    /// <summary>
-    /// Initializes a new instance with the specified initial value.
-    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ValueAtomicNullableBool(bool initialValue) => _state = new ValueAtomicInt(initialValue ? _true : _false);
 
