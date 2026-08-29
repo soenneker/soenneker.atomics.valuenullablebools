@@ -88,6 +88,7 @@ public struct ValueAtomicNullableBool
     /// <summary>
     /// Writes a raw backing state.
     /// </summary>
+    /// <param name="state">State value used by the variant.</param>
     /// <remarks>
     /// Callers must only provide valid values: <c>-1</c>, <c>0</c>, or <c>1</c>.
     /// </remarks>
@@ -97,18 +98,21 @@ public struct ValueAtomicNullableBool
     /// <summary>
     /// Gets the value, treating <c>null</c>/<c>unknown</c> as <see langword="false"/>.
     /// </summary>
+    /// <returns>true if gets the value, treating null/unknown as; otherwise, false.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetValueOrFalse() => _state.Read() == _true;
 
     /// <summary>
     /// Gets the value, treating <c>null</c>/<c>unknown</c> as <see langword="true"/>.
     /// </summary>
+    /// <returns>true if gets the value, treating null/unknown as; otherwise, false.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool GetValueOrTrue() => _state.Read() != _false;
 
     /// <summary>
     /// Sets the state to <see langword="true"/> or <see langword="false"/>.
     /// </summary>
+    /// <param name="value">Replacement value to store atomically.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Set(bool value) => _state.Write(value ? _true : _false);
 
@@ -116,6 +120,8 @@ public struct ValueAtomicNullableBool
     /// Attempts to set the state to <see langword="true"/> or <see langword="false"/>
     /// only if the current state is <c>null</c>/<c>unknown</c>.
     /// </summary>
+    /// <param name="value">Replacement value stored only when the expected value matches.</param>
+    /// <returns>true if the requested update was applied; otherwise, false.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TrySet(bool value) => _state.CompareExchange(value ? _true : _false, _null) == _null;
 
@@ -123,6 +129,9 @@ public struct ValueAtomicNullableBool
     /// Attempts to transition the state from <paramref name="expected"/> to
     /// <paramref name="newState"/>.
     /// </summary>
+    /// <param name="newState">State to store when the expected state matches.</param>
+    /// <param name="expected">Value that must currently be stored for the update to succeed.</param>
+    /// <returns>true if the requested update was applied; otherwise, false.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryCompareExchange(int newState, int expected) => _state.CompareExchange(newState, expected) == expected;
 
