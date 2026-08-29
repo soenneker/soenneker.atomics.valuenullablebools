@@ -13,6 +13,27 @@ A lightweight, allocation-free atomic tri-state flag implemented on top of an in
 dotnet add package Soenneker.Atomics.ValueNullableBools
 ```
 
+## Usage
+
+```csharp
+using Soenneker.Atomics.ValueNullableBools;
+
+public sealed class FeatureProbe
+{
+    private ValueAtomicNullableBool _supported;
+
+    public bool Publish(bool result) => _supported.TrySet(result);
+    public bool? Read() => _supported.Value;
+    public void Invalidate() => _supported.Reset();
+}
+```
+
+The default value represents `null`/unknown. `TrySet` atomically lets one caller publish the first known boolean. `GetValueOrFalse` and `GetValueOrTrue` read with an explicit fallback without changing the stored state.
+
+This is a mutable struct and must remain in stable field storage. Passing it by value or returning it from a property creates independent tri-state state. Use the reference-type `AtomicNullableBool` when the wrapper itself must be shared.
+
+Prefer the nullable API in application code. Raw `Write` and `TryCompareExchange` accept integer states without validation; only `-1`, `0`, and `1` have defined meaning.
+
 ## What you get
 
 - `ValueAtomicNullableBool` — A lightweight, allocation-free atomic tri-state flag implemented on top of an inline `ValueAtomicInt`. Backing values: `-1` = null / unknown `0` = false `1` = true.
