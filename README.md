@@ -3,11 +3,36 @@
 [![](https://img.shields.io/nuget/dt/soenneker.atomics.valuenullablebools.svg?style=for-the-badge)](https://www.nuget.org/packages/soenneker.atomics.valuenullablebools/)
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.atomics.valuenullablebools/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.atomics.valuenullablebools/actions/workflows/codeql.yml)
 
-# ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Atomics.ValueNullableBools
-### A lightweight, allocation-free atomic nullable boolean struct implemented on top of an inline ValueAtomicInt
+# Soenneker.Atomics.ValueNullableBools
 
-## Installation
+A lightweight, allocation-free atomic tri-state flag implemented on top of an inline `ValueAtomicInt`. Backing values: `-1` = null / unknown `0` = false `1` = true.
 
-```
+## Install
+
+```bash
 dotnet add package Soenneker.Atomics.ValueNullableBools
 ```
+
+## What you get
+
+- `ValueAtomicNullableBool` — A lightweight, allocation-free atomic tri-state flag implemented on top of an inline `ValueAtomicInt`. Backing values: `-1` = null / unknown `0` = false `1` = true.
+
+## API at a glance
+
+| API | What it does | Result / important behavior |
+| --- | --- | --- |
+| `ValueAtomicNullableBool.HasValue` | Gets a value indicating whether the current state is non-null. | Gets a value indicating whether the current state is non-null. |
+| `ValueAtomicNullableBool.Value` | Gets the current value as a nullable boolean. | Gets the current value as a nullable boolean. |
+| `ValueAtomicNullableBool.Read()` | Reads the raw backing state. | `-1` (null), `0` (false), or `1` (true). |
+| `ValueAtomicNullableBool.GetValueOrFalse()` | Gets the value, treating `null`/`unknown` as `false`. | true if gets the value, treating null/unknown as; otherwise, false. |
+| `ValueAtomicNullableBool.GetValueOrTrue()` | Gets the value, treating `null`/`unknown` as `true`. | true if gets the value, treating null/unknown as; otherwise, false. |
+| `ValueAtomicNullableBool.Set(value)` | Sets the state to `true` or `false`. | Returns no value; the requested change is complete when the method returns. |
+| `ValueAtomicNullableBool.TrySet(value)` | Attempts to set the state to `true` or `false` only if the current state is `null`/`unknown`. | true if the requested update was applied; otherwise, false. |
+| `ValueAtomicNullableBool.TryCompareExchange(newState, expected)` | Attempts to transition the state from `expected` to `newState`. | true if the requested update was applied; otherwise, false. |
+| `ValueAtomicNullableBool.Reset()` | Resets the state to `null`/`unknown`. | Returns no value; the requested change is complete when the method returns. |
+| `ValueAtomicNullableBool.ToString()` | Returns a string representation of the current state. | Returns `string`. |
+
+## Important behavior
+
+- `ValueAtomicNullableBool`: Reads establish acquire semantics and writes establish release semantics. This is a mutable `struct` intended for use as a private field or inline synchronization primitive. Avoid copying this type or exposing it publicly.
+- `ValueAtomicNullableBool.Write(state)`: Callers must only provide valid values: `-1`, `0`, or `1`.
